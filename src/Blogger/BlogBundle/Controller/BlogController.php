@@ -17,8 +17,13 @@ class BlogController extends Controller
 			throw $this->createNotFoundException('Unable to find Blog post.');
 		}
 
+		$comments = $em->getRepository('BloggerBlogBundle:Comment')
+                   ->getCommentsForBlog($blog->getId());
+
+
 		return $this->render('BloggerBlogBundle:Blog:show.html.twig', array(
-			'blog'=> $blog
+			'blog'=> $blog,
+			'comments' => $comments
 			));
 	}
 }

@@ -257,19 +257,4 @@ class Blog
     {
         $this->setUpdated(new \DateTime());
     }
-
-    /**
-     * Remove comments
-     *
-     * @param \Blogger\BlogBundle\Entity\Comment $comments
-     */
-    public function removeComment(\Blogger\BlogBundle\Entity\Comment $comments)
-    {
-        $this->comments->removeElement($comments);
-    }
-
-    public function _toString()
-    {
-        return $this->getTitle();
-    }
 }
