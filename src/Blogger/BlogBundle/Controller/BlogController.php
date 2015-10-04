@@ -4,9 +4,19 @@ namespace Blogger\BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+/**
+ * Kontrolér pre článok.
+ * @package Blogger\BlogBundle\Controller
+ */
 class BlogController extends Controller
 {
-	public function showAction($id, $slug)
+        /**
+         * Zobrazí článok s jeho komentármi.
+         * @param int $id identifikátor článku
+         * @return Response renderovanie článku s jeho komentármi
+         * @throws NotFoundHttpException neexistujúca stránka
+         */
+	public function showAction($id)
 	{
 		$em = $this->getDoctrine()->getEntityManager();
 

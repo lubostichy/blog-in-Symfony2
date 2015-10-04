@@ -7,8 +7,16 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Blogger\BlogBundle\Entity\Blog;
 
+/**
+ * Dáta pre blog.
+ * @package Blogger\BlogBundle\DataFixtures\ORM
+ */
 class BlogFixtures extends AbstractFixture implements OrderedFixtureInterface
 {
+    /**
+     * Načíta články pre blog do databázy.
+     * @param ObjectManager $manager manažér databázy
+     */
     public function load(ObjectManager $manager)
     {
         $blog1 = new Blog();
@@ -63,7 +71,7 @@ class BlogFixtures extends AbstractFixture implements OrderedFixtureInterface
 
         $manager->flush();
 
-        // first parameter is a reference identifier
+        // prvý parameter je odkaz na identifikátor
         $this->addReference('blog-1', $blog1);
         $this->addReference('blog-2', $blog2);
         $this->addReference('blog-3', $blog3);
@@ -71,7 +79,10 @@ class BlogFixtures extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('blog-5', $blog5);
     }
 
-    // blogs must be loaded before comments
+    /**
+     * Určí, že články musia byť pred komentármi.
+     * @return int poradie
+     */
     public function getOrder()
     {
         return 1;

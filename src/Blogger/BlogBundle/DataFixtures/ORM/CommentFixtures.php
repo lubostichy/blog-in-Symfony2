@@ -6,11 +6,18 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Blogger\BlogBundle\Entity\Comment;
-use Blogger\BlogBundle\Entity\Blog;
 
+/**
+ * Dáta pre komentáre.
+ * @package Blogger\BlogBundle\DataFixtures\ORM
+ */
 class CommentFixtures extends AbstractFixture implements OrderedFixtureInterface
 {
-	public function load(ObjectManager $manager)
+    /**
+     * Načíta komentáre pre blog do databázy.
+     * @param ObjectManager $manager manažér databázy
+     */
+    public function load(ObjectManager $manager)
     {
         $comment = new Comment();
         $comment->setUser('symfony');
@@ -120,7 +127,10 @@ class CommentFixtures extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
     }
 
-    // comments will be loaded after blogs
+    /**
+     * Určí, že komentáre sa načíta až po článkoch.
+     * @return int poradie
+     */
     public function getOrder()
     {
         return 2;

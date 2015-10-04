@@ -7,10 +7,16 @@ use Blogger\BlogBundle\Entity\Comment;
 use Blogger\BlogBundle\Form\CommentType;
 
 /**
- * Comment controller
+ * Kontrolér pre komentáre.
+ * @package Blogger\BlogBundle\Controller
  */
 class CommentController extends Controller
 {
+    /**
+     * Pridá nový komentár.
+     * @param int $blog_id identifikátor článku 
+     * @return Response renderovanie komentáru
+     */
     public function newAction($blog_id)
     {
         $blog = $this->getBlog($blog_id);
@@ -25,6 +31,11 @@ class CommentController extends Controller
         ));
     }
 
+    /**
+     * Vytvorí a pridá komentár.
+     * @param int $blog_id identifikátor článku
+     * @return RedirectResponse|Response renderovanie nového komentáru alebo presmerovanie na nový komentár
+     */
     public function createAction($blog_id)
     {
         $blog = $this->getBlog($blog_id);
@@ -54,6 +65,12 @@ class CommentController extends Controller
         ));
     }
 
+    /**
+     * Získa článok.
+     * @param int $blog_id identifikátor článku
+     * @return object|null článok alebo null
+     * @throws NotFounHttpException neexistujúcu stránku
+     */
     protected function getBlog($blog_id)
     {
         $em = $this->getDoctrine()

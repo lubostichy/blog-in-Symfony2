@@ -7,8 +7,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Blogger\BlogBundle\Entity\Enquiry;
 use Blogger\BlogBundle\Form\EnquiryType;
 
+/**
+ * Kontrolér pre domovskú stránku.
+ * @package Blogger\BlogBundle\Controller
+ */
 class PageController extends Controller
 {
+        /**
+         * Získa články.
+         * @return Response renderovanie šablóny s článkami
+         */
 	public function indexAction()
 	{
 		$em = $this->getDoctrine()
@@ -22,11 +30,19 @@ class PageController extends Controller
 		));
 	}
 
+        /**
+         * Vyrenderuje šablónu o stránke.
+         * @return Response renderovanie šablóny o stránke
+         */
 	public function aboutAction()
 	{
 		return $this->render('BloggerBlogBundle:Page:about.html.twig');
 	}
 
+        /**
+         * Odošle dotazník.
+         * @return RedirectResponse|Response renderovanie šablóny pre kontakt
+         */
 	public function contactAction()
 	{
 		$enquiry = new Enquiry();
@@ -40,17 +56,17 @@ class PageController extends Controller
 
 			if ($form->isValid())
 			{
-				// sending mail
-				$message = \Swift_Message::newInstance()
+                            // posielanie mailu
+                            $message = \Swift_Message::newInstance()
 				    ->setSubject('Contact enquiry from symblog')
-		            ->setFrom('enquiries@symblog.co.uk')
-		            ->setTo($this->container->getParameter('blogger_blog.emails.contact_email'))
-		            ->setBody($this->renderView('BloggerBlogBundle:Page:contactEmail.txt.twig', array('enquiry' => $enquiry)));
-		        $this->get('mailer')->send($message);
+                                    ->setFrom('enquiries@symblog.co.uk')
+                                    ->setTo($this->container->getParameter('blogger_blog.emails.contact_email'))
+                                    ->setBody($this->renderView('BloggerBlogBundle:Page:contactEmail.txt.twig', array('enquiry' => $enquiry)));
+                            $this->get('mailer')->send($message);
 
-		        $this->get('session')->getFlashBag()->add('blogger-notice','Your contact enquiry was successfully sent. Thank you!');
+                            $this->get('session')->getFlashBag()->add('blogger-notice','Your contact enquiry was successfully sent. Thank you!');
 				
-				// redirect - vyhnut sa znovuposlaniu emailu
+				// vyhne sa znovuposlaniu mailu
 				return $this->redirect($this->generateUrl('BloggerBlogBundle_contact'));
 			}
 		}
@@ -60,6 +76,11 @@ class PageController extends Controller
 		));
 
 	}
+        
+        /**
+         * Získa posledné komentáre.
+         * @return Response renderovanie bočného panelu
+         */
 	public function sidebarAction()
 	{
 	    $em = $this->getDoctrine()

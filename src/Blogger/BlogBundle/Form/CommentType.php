@@ -6,13 +6,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Formulár pre komentár.
+ * @package Blogger\BlogBundle\Form
+ */
 class CommentType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * Vytvorí formulár.
+     * @param FormBuilderInterface $builder konštruktér formulára
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder)
     {
         $builder
             ->add('user')
@@ -21,7 +25,8 @@ class CommentType extends AbstractType
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * Nastaví preddefinované možnosti.
+     * @param OptionsResolverInterface $resolver rozhoduje o možnostiach
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -31,7 +36,8 @@ class CommentType extends AbstractType
     }
 
     /**
-     * @return string
+     * Získa názov formulára pre komentár.
+     * @return string názov formulára pre komentár
      */
     public function getName()
     {

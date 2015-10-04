@@ -7,6 +7,8 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
+ * Entita predstavujúca komentár.
+ * @package Blogger\BlogBundle\Entity
  * @ORM\Entity(repositoryClass="Blogger\BlogBundle\Entity\Repository\CommentRepository")
  * @ORM\Table(name="comment")
  * @ORM\HasLifecycleCallbacks
@@ -14,6 +16,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class Comment
 {
     /**
+     * @var int identifikátor komentáru
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -21,36 +24,45 @@ class Comment
     protected $id;
 
     /**
+     * @var string meno používateľa
      * @ORM\Column(type="string")
      */
     protected $user;
 
     /**
+     * @var string text komentáru
      * @ORM\Column(type="text")
      */
     protected $comment;
 
     /**
+     * @var bool schvalený/neschválený komentár
      * @ORM\Column(type="boolean")
      */
     protected $approved;
 
     /**
+     * @var \Blog odpovedajúci článok
      * @ORM\ManyToOne(targetEntity="Blog", inversedBy="comments")
      * @ORM\JoinColumn(name="blog_id", referencedColumnName="id")
      */
     protected $blog;
 
     /**
+     * @var \DateTime čas vytvorenia komentára
      * @ORM\Column(type="datetime")
      */
     protected $created;
 
     /**
+     * @var \DateTime čas úpravy komentára
      * @ORM\Column(type="datetime")
      */
     protected $updated;
 
+    /**
+     * Konštruktor komentára.
+     */
     public function __construct()
     {
         $this->setCreated(new \DateTime());
@@ -60,17 +72,8 @@ class Comment
     }
 
     /**
-     * @ORM\preUpdate
-     */
-    public function setUpdatedValue()
-    {
-       $this->setUpdated(new \DateTime());
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
+     * Získa identifikátor komentára.
+     * @return int identifikátor komentára
      */
     public function getId()
     {
@@ -78,10 +81,9 @@ class Comment
     }
 
     /**
-     * Set user
-     *
-     * @param string $user
-     * @return Comment
+     * Nastaví meno používateľa.
+     * @param string $user nové meno používateľa
+     * @return Comment komentár
      */
     public function setUser($user)
     {
@@ -91,9 +93,8 @@ class Comment
     }
 
     /**
-     * Get user
-     *
-     * @return string 
+     * Získa meno používateľa.
+     * @return string meno používateľa
      */
     public function getUser()
     {
@@ -101,10 +102,9 @@ class Comment
     }
 
     /**
-     * Set comment
-     *
-     * @param string $comment
-     * @return Comment
+     * Nastaví text komentára.
+     * @param string $comment nový text komentára
+     * @return Comment komentár
      */
     public function setComment($comment)
     {
@@ -114,9 +114,8 @@ class Comment
     }
 
     /**
-     * Get comment
-     *
-     * @return string 
+     *Získa text komentára.
+     * @return string text komentára
      */
     public function getComment()
     {
@@ -124,10 +123,9 @@ class Comment
     }
 
     /**
-     * Set approved
-     *
-     * @param boolean $approved
-     * @return Comment
+     * Nastaví schválenie komentára.
+     * @param boolean $approved true pre schválané a false pre neschválané
+     * @return Comment komentár
      */
     public function setApproved($approved)
     {
@@ -137,9 +135,8 @@ class Comment
     }
 
     /**
-     * Get approved
-     *
-     * @return boolean 
+     * Získa hodnotu schválania komentára.
+     * @return boolean hodnota schválenia
      */
     public function getApproved()
     {
@@ -147,10 +144,9 @@ class Comment
     }
 
     /**
-     * Set created
-     *
-     * @param \DateTime $created
-     * @return Comment
+     * Nastaví čas vytvorenia.
+     * @param \DateTime $created čas vytvorenia
+     * @return Comment komentár
      */
     public function setCreated($created)
     {
@@ -160,9 +156,8 @@ class Comment
     }
 
     /**
-     * Get created
-     *
-     * @return \DateTime 
+     * Získa čas vytvorenia.
+     * @return \DateTime čas vytvorenia
      */
     public function getCreated()
     {
@@ -170,10 +165,9 @@ class Comment
     }
 
     /**
-     * Set updated
-     *
-     * @param \DateTime $updated
-     * @return Comment
+     * Nastaví čas úpravy.
+     * @param \DateTime $updated čas úpravy
+     * @return Comment komentár
      */
     public function setUpdated($updated)
     {
@@ -183,9 +177,8 @@ class Comment
     }
 
     /**
-     * Get updated
-     *
-     * @return \DateTime 
+     * Získa čas úpravy.
+     * @return \DateTime čas úpravy
      */
     public function getUpdated()
     {
@@ -193,10 +186,18 @@ class Comment
     }
 
     /**
-     * Set blog
-     *
-     * @param \Blogger\BlogBundle\Entity\Blog $blog
-     * @return Comment
+     * Nastaví hodnotu úpravy.
+     * @ORM\preUpdate
+     */
+    public function setUpdatedValue()
+    {
+       $this->setUpdated(new \DateTime());
+    }
+    
+    /**
+     * Priradí komentár k článku.
+     * @param \Blogger\BlogBundle\Entity\Blog|null $blog článok
+     * @return Comment komentár
      */
     public function setBlog(\Blogger\BlogBundle\Entity\Blog $blog = null)
     {
@@ -206,15 +207,18 @@ class Comment
     }
 
     /**
-     * Get blog
-     *
-     * @return \Blogger\BlogBundle\Entity\Blog 
+     * Získa článok, ku ktorému patrí komentár.
+     * @return \Blogger\BlogBundle\Entity\Blog článok
      */
     public function getBlog()
     {
         return $this->blog;
     }
     
+    /**
+     * Načíta metadáta o povinných údajoch pri komentári.
+     * @param ClassMetadata $metadata metadáta povinných údajov
+     */
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata->addPropertyConstraint('user', new NotBlank(array(
